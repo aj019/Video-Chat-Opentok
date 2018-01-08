@@ -16,6 +16,8 @@ public interface NetworkInterface {
     @GET("signup.php")
     Observable<ApiResponse> signup(@Query("username") String username, @Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
+    @GET("login.php")
+    Observable<ApiResponse> login(@Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
 
 }

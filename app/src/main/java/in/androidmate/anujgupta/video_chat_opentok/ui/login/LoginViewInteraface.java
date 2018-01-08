@@ -5,4 +5,6 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.login;
  */
 
 public interface LoginViewInteraface {
+
+    void showToast(String msg);
 }
