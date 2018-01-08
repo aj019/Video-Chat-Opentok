@@ -2,6 +2,7 @@ package in.androidmate.anujgupta.video_chat_opentok.network;
 
 
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
+import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -19,5 +20,6 @@ public interface NetworkInterface {
     @GET("login.php")
     Observable<ApiResponse> login(@Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
-
+    @GET("fetchUsers.php")
+    Observable<UserResponse> fetchUsers();
 }

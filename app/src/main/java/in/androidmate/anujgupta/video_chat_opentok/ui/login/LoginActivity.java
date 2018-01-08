@@ -1,5 +1,6 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,5 +74,12 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     @Override
     public void showToast(String msg) {
         Toast.makeText(LoginActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goToActivity(Class<? extends Activity> activity) {
+        Intent i = new Intent(LoginActivity.this,activity);
+        startActivity(i);
+        finish();
     }
 }

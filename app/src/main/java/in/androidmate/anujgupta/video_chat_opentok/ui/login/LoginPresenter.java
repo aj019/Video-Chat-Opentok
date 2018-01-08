@@ -5,6 +5,8 @@ import android.util.Log;
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkClient;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkInterface;
+import in.androidmate.anujgupta.video_chat_opentok.ui.home.HomeActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -47,6 +49,8 @@ public class LoginPresenter implements LoginPresenterInterface {
 
                 if(apiResponse.getStatus().equals("success")){
                     loginView.showToast("Login Sucessful");
+                    PrefManager.putBoolean("isLoggedIn",true);
+                    loginView.goToActivity(HomeActivity.class);
                 }else{
                     loginView.showToast("Signup Error"+apiResponse.getError());
                 }
