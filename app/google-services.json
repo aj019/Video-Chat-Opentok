@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "706442675012",
+    "firebase_url": "https://video-chat-2156f.firebaseio.com",
+    "project_id": "video-chat-2156f",
+    "storage_bucket": "video-chat-2156f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706442675012:android:12d41a8bf4e0769d",
+        "android_client_info": {
+          "package_name": "in.androidmate.anujgupta.video_chat_opentok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706442675012-h95n53krfvimiqae3hipcf3uroli49vc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARtz1Wu6dS8Vn-lb-iOOwIp88-cuHk4hk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

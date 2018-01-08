@@ -3,6 +3,7 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.splash;
 import android.util.Log;
 import android.widget.Toast;
 
+import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
 import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
 
 /**
@@ -25,6 +26,7 @@ public class SplashPresenter implements SplashPresenterInterface {
             Log.d("Logged in","True");
         }else{
             Log.d("Logged in","False");
+            splashView.goToActivity(LoginActivity.class);
         }
 
     }

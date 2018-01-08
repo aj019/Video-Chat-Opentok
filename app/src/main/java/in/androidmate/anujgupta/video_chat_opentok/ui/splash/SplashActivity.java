@@ -1,5 +1,8 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.splash;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -27,5 +30,12 @@ public class SplashActivity extends AppCompatActivity implements SplashViewInter
 
     private void checkFirstLogin(){
         splashPresenter.checkFirstLogin();
+    }
+
+
+    @Override
+    public void goToActivity(Class<? extends Activity> activity) {
+        startActivity(new Intent(SplashActivity.this,activity));
+        finish();
     }
 }

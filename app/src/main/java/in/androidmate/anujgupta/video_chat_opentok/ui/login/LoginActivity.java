@@ -1,18 +1,29 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.login;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
+import in.androidmate.anujgupta.video_chat_opentok.ui.signup.SignUpActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInteraface {
 
     LoginPresenter loginPresenter;
 
+    @BindView(R.id.link_signup)
+    TextView tvCreateAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         setupMVP();
     }
@@ -21,5 +32,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
 
         loginPresenter = new LoginPresenter(this);
 
+    }
+
+
+    @OnClick(R.id.link_signup)
+    public void goToSignUp(View view){
+        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
 }
