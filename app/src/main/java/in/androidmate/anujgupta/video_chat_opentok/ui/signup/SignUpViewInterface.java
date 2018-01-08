@@ -5,4 +5,6 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.signup;
  */
 
 public interface SignUpViewInterface {
+
+    public void showToast(String msg);
 }

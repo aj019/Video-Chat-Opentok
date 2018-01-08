@@ -49,4 +49,8 @@ dependencies {
     //Firebase
     compile 'com.google.firebase:firebase-messaging:11.8.0'
 
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
 }
+
+apply plugin: 'com.google.gms.google-services'

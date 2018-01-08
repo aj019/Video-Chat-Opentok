@@ -5,4 +5,6 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.signup;
  */
 
 public interface SignUpPresenterInterface {
+
+    void signUp(String username,String password,String email,String device_id);
 }
