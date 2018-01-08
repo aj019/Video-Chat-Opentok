@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.adapters.UserAdapter;
+import in.androidmate.anujgupta.video_chat_opentok.helpers.RecyclerItemClickListener;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 
 public class HomeActivity extends AppCompatActivity implements HomeViewInterface {
@@ -50,11 +52,19 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
 
 
     @Override
-    public void displayUsers(UserResponse userResponse) {
+    public void displayUsers(final UserResponse userResponse) {
         if(userResponse!=null) {
 
             adapter = new UserAdapter(HomeActivity.this,userResponse.getUsers());
             rvUsers.setAdapter(adapter);
+            rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String device = userResponse.getUsers().get(position).getDeviceId();
+                    Log.d("Device id",device);
+                }
+            }));
+
         }else{
             showToast("User Response returned null");
         }
