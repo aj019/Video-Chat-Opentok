@@ -3,6 +3,7 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.chat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,9 @@ public class ChatActivity extends AppCompatActivity
 
     private FrameLayout mPublisherViewContainer;
     private FrameLayout mSubscriberViewContainer;
+    private String session_id = "";
+    private String token = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,17 @@ public class ChatActivity extends AppCompatActivity
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
 
-        requestPermissions();
+        Intent i = getIntent();
+        if(i!=null){
+            session_id = i.getStringExtra("session_id");
+            token = i.getStringExtra("token");
+        }else{
+            session_id = OpenTokConfig.SESSION_ID;
+            token = OpenTokConfig.TOKEN;
+        }
+
+
+        requestPermissions(session_id,token);
     }
 
      /* Activity lifecycle methods */
@@ -122,7 +136,7 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @AfterPermissionGranted(RC_VIDEO_APP_PERM)
-    private void requestPermissions() {
+    private void requestPermissions(String session_id,String token) {
 
         String[] perms = { Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
         if (EasyPermissions.hasPermissions(this, perms)) {
@@ -130,7 +144,7 @@ public class ChatActivity extends AppCompatActivity
             if (OpenTokConfig.CHAT_SERVER_URL == null) {
                 // use hard coded session values
                 if (OpenTokConfig.areHardCodedConfigsValid()) {
-                    initializeSession(OpenTokConfig.API_KEY, OpenTokConfig.SESSION_ID, OpenTokConfig.TOKEN);
+                    initializeSession(OpenTokConfig.API_KEY,session_id, token);
                 } else {
                     showConfigError("Configuration Error", OpenTokConfig.hardCodedConfigErrorMessage);
                 }
@@ -259,6 +273,8 @@ public class ChatActivity extends AppCompatActivity
         showOpenTokError(opentokError);
     }
 
+    /* Subscriber Listener methods */
+
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
 
@@ -298,5 +314,13 @@ public class ChatActivity extends AppCompatActivity
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriber.destroy();
+        mPublisher.destroy();
+        mSession.disconnect();
     }
 }
