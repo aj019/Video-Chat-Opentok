@@ -12,7 +12,10 @@
         <FrameLayout
             android:id="@+id/subscriber_container"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+            android:layout_height="fill_parent"
+            android:background="@drawable/sub_back"
+            >
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/publisher_container"
@@ -24,6 +27,17 @@
             android:layout_marginRight="@dimen/publisher_end_margin"
             android:padding="@dimen/publisher_padding"
             android:background="@color/publisher_border_color" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCancel"
+            android:src="@drawable/ic_call_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="50dp"
+            android:onClick="endCall"
+            app:backgroundTint="@color/end_call_button"
+            />
 
     </FrameLayout>
 

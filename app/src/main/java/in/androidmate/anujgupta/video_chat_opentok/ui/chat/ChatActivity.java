@@ -23,6 +23,9 @@ import com.opentok.android.SubscriberKit;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -53,6 +56,7 @@ public class ChatActivity extends AppCompatActivity
     private String token = "";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,6 +64,7 @@ public class ChatActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        ButterKnife.bind(this);
 
         // initialize view objects from your layout
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
@@ -254,6 +259,9 @@ public class ChatActivity extends AppCompatActivity
             mSubscriber = null;
             mSubscriberViewContainer.removeAllViews();
         }
+
+        Toast.makeText(ChatActivity.this,"Video Chat Disconnected",Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
@@ -347,4 +355,10 @@ public class ChatActivity extends AppCompatActivity
         }
 
     }
+
+    @OnClick(R.id.fabCancel)
+    public void endCall(){
+        finish();
+    }
+
 }

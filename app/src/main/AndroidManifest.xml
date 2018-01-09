@@ -31,7 +31,12 @@
         <activity android:name=".ui.signup.SignUpActivity" />
 
         <activity android:name=".ui.home.HomeActivity" />
-        <activity android:name=".ui.chat.ChatActivity"></activity>
+        <activity android:name=".ui.chat.ChatActivity">
+            <intent-filter>
+                <action android:name=".ui.chat.ChatActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
      
 

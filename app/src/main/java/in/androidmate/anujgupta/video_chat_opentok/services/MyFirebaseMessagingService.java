@@ -71,7 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             b.putString("token",data.get("token"));
             intent.putExtras(b);
         }else{
-            Log.d(TAG,"No Data Found");
+            Log.d(TAG,"Notification Data Null");
         }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
