@@ -2,6 +2,8 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.login;
 
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkClient;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkInterface;
@@ -50,6 +52,7 @@ public class LoginPresenter implements LoginPresenterInterface {
                 if(apiResponse.getStatus().equals("success")){
                     loginView.showToast("Login Sucessful");
                     PrefManager.putBoolean("isLoggedIn",true);
+                    PrefManager.putString("device_id", FirebaseInstanceId.getInstance().getToken());
                     loginView.goToActivity(HomeActivity.class);
                 }else{
                     loginView.showToast("Signup Error"+apiResponse.getError());

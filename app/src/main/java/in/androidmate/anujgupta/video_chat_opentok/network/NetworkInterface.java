@@ -22,7 +22,7 @@ public interface NetworkInterface {
     Observable<ApiResponse> login(@Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
     @GET("fetchUsers.php")
-    Observable<UserResponse> fetchUsers();
+    Observable<UserResponse> fetchUsers(@Query("device_id") String device_id);
 
     @GET("generateSession.php")
     Observable<SessionDataResponse> generateSession(@Query("device_id") String device_id);

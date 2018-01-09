@@ -6,6 +6,7 @@ import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkClient;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkInterface;
+import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -26,9 +27,9 @@ public class HomePresenter implements HomePresenterInterface {
     }
 
     @Override
-    public void getUsers() {
+    public void getUsers(String device_id) {
 
-        getObservable().subscribeWith(getObserver());
+        getObservable(device_id).subscribeWith(getObserver());
         
     }
 
@@ -37,9 +38,9 @@ public class HomePresenter implements HomePresenterInterface {
         getVideoChatObservable(device_id).subscribeWith(getVideoChatObserver());
     }
 
-    public Observable<UserResponse> getObservable(){
+    public Observable<UserResponse> getObservable(String device_id){
         return NetworkClient.getRetrofit().create(NetworkInterface.class)
-                .fetchUsers()
+                .fetchUsers(device_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.androidmate.anujgupta.video_chat_opentok.R;
@@ -50,7 +52,8 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     }
 
     private void getUsers() {
-        homePresenter.getUsers();
+        String device_id = FirebaseInstanceId.getInstance().getToken();
+        homePresenter.getUsers(device_id);
     }
 
 
