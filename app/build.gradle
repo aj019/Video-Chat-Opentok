@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "in.androidmate.anujgupta.video_chat_opentok"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -48,6 +48,13 @@ dependencies {
 
     //Firebase
     compile 'com.google.firebase:firebase-messaging:11.8.0'
+
+    //OpenTok
+    compile 'com.opentok.android:opentok-android-sdk:2.12.+'
+
+    //EasyPermission
+    compile 'pub.devrel:easypermissions:0.4.0'
+
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
