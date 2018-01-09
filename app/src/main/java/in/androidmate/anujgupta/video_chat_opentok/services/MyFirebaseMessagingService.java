@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.util.Map;
 
 import in.androidmate.anujgupta.video_chat_opentok.R;
+import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
 import in.androidmate.anujgupta.video_chat_opentok.ui.splash.SplashActivity;
 
 /**
@@ -34,6 +36,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
+
+    private String TAG = "Notification";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -56,8 +60,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-        Intent intent = new Intent(this, SplashActivity.class);
+
+        Intent intent = new Intent(this, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if(data != null){
+            Bundle b = new Bundle();
+            Log.d(TAG,"session_id="+data.get("session_id") + " token = "+data.get("token"));
+            b.putString("session_id",data.get("session_id"));
+            b.putString("token",data.get("token"));
+            intent.putExtras(b);
+        }else{
+            Log.d(TAG,"No Data Found");
+        }
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")

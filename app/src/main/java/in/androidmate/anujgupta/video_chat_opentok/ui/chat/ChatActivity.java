@@ -66,14 +66,29 @@ public class ChatActivity extends AppCompatActivity
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
 
         Intent i = getIntent();
-        if(i!=null){
-            session_id = i.getStringExtra("session_id");
-            token = i.getStringExtra("token");
+        Bundle extras = i.getExtras();
+
+        if (extras != null) {
+            String sess  = extras.getString("session_id");
+            String tok = extras.getString("token");
+            if(sess !=null && tok!=null){
+                Log.d(LOG_TAG,"Token not null");
+                session_id = sess;
+                token = tok;
+
+            }else{
+                Log.d(LOG_TAG,"Session or Token Null");
+                session_id = OpenTokConfig.SESSION_ID;
+                token = OpenTokConfig.TOKEN;
+            }
         }else{
+            Log.d(LOG_TAG,"Extras Null");
             session_id = OpenTokConfig.SESSION_ID;
             token = OpenTokConfig.TOKEN;
         }
 
+        Log.d(LOG_TAG,"token = "+ token);
+        Log.d(LOG_TAG,"session id = "+ session_id);
 
         requestPermissions(session_id,token);
     }
@@ -319,8 +334,17 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSubscriber.destroy();
-        mPublisher.destroy();
-        mSession.disconnect();
+        if(mSubscriber!=null){
+            mSubscriber.destroy();
+        }
+
+        if(mPublisher!=null){
+            mPublisher.destroy();
+        }
+
+        if(mSession!=null){
+            mSession.disconnect();
+        }
+
     }
 }
