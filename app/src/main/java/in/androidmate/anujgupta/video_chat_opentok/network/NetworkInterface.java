@@ -2,6 +2,7 @@ package in.androidmate.anujgupta.video_chat_opentok.network;
 
 
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
+import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -22,4 +23,7 @@ public interface NetworkInterface {
 
     @GET("fetchUsers.php")
     Observable<UserResponse> fetchUsers();
+
+    @GET("generateSession.php")
+    Observable<SessionDataResponse> generateSession(@Query("device_id") String device_id);
 }

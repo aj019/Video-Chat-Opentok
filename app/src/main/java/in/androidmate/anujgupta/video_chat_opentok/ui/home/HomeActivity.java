@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.adapters.UserAdapter;
 import in.androidmate.anujgupta.video_chat_opentok.helpers.RecyclerItemClickListener;
+import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
 
@@ -64,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
                 public void onItemClick(View view, int position) {
                     String device = userResponse.getUsers().get(position).getDeviceId();
                     Log.d("Device id",device);
-                    startActivity(new Intent(HomeActivity.this, ChatActivity.class));
+                    homePresenter.startVideoChat(device);
                 }
             }));
 
@@ -86,5 +87,20 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     @Override
     public void hideProgressBar() {
 
+    }
+
+    @Override
+    public void goToChat(SessionDataResponse sessionDataResponse) {
+        if(sessionDataResponse != null){
+            Intent i = new Intent(HomeActivity.this,ChatActivity.class);
+            Bundle b = new Bundle();
+            b.putString("session_id",sessionDataResponse.getSessionId());
+            b.putString("token",sessionDataResponse.getToken());
+            i.putExtras(b);
+            startActivity(i);
+            showToast("Starting Video Chat");
+        }else{
+            showToast("Could Not Generate Session");
+        }
     }
 }

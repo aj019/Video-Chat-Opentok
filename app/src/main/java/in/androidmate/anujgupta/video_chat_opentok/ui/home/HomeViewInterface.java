@@ -1,5 +1,6 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.home;
 
+import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 
 /**
@@ -12,5 +13,6 @@ public interface HomeViewInterface {
     void showToast(String msg);
     void showProgressBar();
     void hideProgressBar();
+    void goToChat(SessionDataResponse sessionDataResponse);
 
 }

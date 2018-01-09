@@ -2,6 +2,7 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.home;
 
 import android.util.Log;
 
+import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkClient;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkInterface;
@@ -29,6 +30,11 @@ public class HomePresenter implements HomePresenterInterface {
 
         getObservable().subscribeWith(getObserver());
         
+    }
+
+    @Override
+    public void startVideoChat(String device_id) {
+        getVideoChatObservable(device_id).subscribeWith(getVideoChatObserver());
     }
 
     public Observable<UserResponse> getObservable(){
@@ -61,4 +67,36 @@ public class HomePresenter implements HomePresenterInterface {
             }
         };
     }
+
+    public Observable<SessionDataResponse> getVideoChatObservable(String device_id){
+        return NetworkClient.getRetrofit().create(NetworkInterface.class)
+                .generateSession(device_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public DisposableObserver<SessionDataResponse> getVideoChatObserver(){
+        return new DisposableObserver<SessionDataResponse>() {
+
+            @Override
+            public void onNext(@NonNull SessionDataResponse response) {
+                Log.d(TAG,"OnNext"+response.getSessionId());
+                homeView.goToChat(response);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d(TAG,"Error"+e);
+                e.printStackTrace();
+                homeView.showToast("Error");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG,"Completed");
+                homeView.hideProgressBar();
+            }
+        };
+    }
+
 }
