@@ -5,6 +5,6 @@
     <color name="colorAccent">#089377</color>
 
     <color name="end_call_button">#f14141</color>
-
+    <color name="white">#fff</color>
     <color name="publisher_border_color">#FFFFFF</color>
 </resources>

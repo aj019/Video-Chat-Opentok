@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -20,7 +22,7 @@ import com.opentok.android.Session;
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
-
+import android.support.v4.app.Fragment;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +58,8 @@ public class ChatActivity extends AppCompatActivity
     private String token = "";
 
 
+    @BindView(R.id.flCalling)
+    FrameLayout flCalling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +192,18 @@ public class ChatActivity extends AppCompatActivity
         mSession = new Session.Builder(this, apiKey, sessionId).build();
         mSession.setSessionListener(this);
         mSession.connect(token);
+        intializeFrameLayout();
+    }
+
+    private void intializeFrameLayout(){
+        Fragment callingFragment = new CallingFragment();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.flCalling,callingFragment).commit();
+    }
+
+    private void hideFrameLayout(){
+        flCalling.setVisibility(View.GONE);
     }
 
     /* Web Service Coordinator delegate methods */
@@ -300,7 +316,7 @@ public class ChatActivity extends AppCompatActivity
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
-
+        hideFrameLayout();
         Log.d(LOG_TAG, "onConnected: Subscriber connected. Stream: "+subscriberKit.getStream().getStreamId());
     }
 
