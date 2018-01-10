@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             }
         }));
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
