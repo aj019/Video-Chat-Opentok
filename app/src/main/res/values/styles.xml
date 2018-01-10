@@ -6,6 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
+
+    </style>
+
+    <style name="OverFlow">
+        <item name="android:src">@drawable/ic_options</item>
     </style>
 
 </resources>

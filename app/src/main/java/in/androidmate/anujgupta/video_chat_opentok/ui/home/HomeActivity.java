@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import in.androidmate.anujgupta.video_chat_opentok.helpers.RecyclerItemClickList
 import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
+import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
 
 public class HomeActivity extends AppCompatActivity implements HomeViewInterface {
 
@@ -32,6 +37,9 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     RecyclerView.Adapter adapter;
     ProgressDialog progressDialog;
 
@@ -42,6 +50,8 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
 
 
         setupMVP();
@@ -127,5 +137,26 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
         }else{
             showToast("Could Not Generate Session");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.logout) {
+            PrefManager.putBoolean("isLoggedIn",false);
+            Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
     }
 }
