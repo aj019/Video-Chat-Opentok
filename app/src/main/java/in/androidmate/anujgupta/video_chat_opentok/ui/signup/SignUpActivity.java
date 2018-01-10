@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.Typefacer;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpViewInterface {
 
@@ -37,14 +38,22 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
     @BindView(R.id.btn_signup)
     Button btSignup;
 
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
 
+        initViews();
         setupMVP();
 
+    }
+
+    private void initViews(){
+        tvTitle.setTypeface(Typefacer.getBoldItalic(this));
     }
 
     private void setupMVP() {
