@@ -49,11 +49,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Users>{
 
         ImageView ivUser;
         TextView tvUsername;
+        TextView tvStatus;
         public Users(View v) {
             super(v);
 
             ivUser = (ImageView) v.findViewById(R.id.ivUserImage);
             tvUsername = (TextView) v.findViewById(R.id.tvUsername);
+            tvStatus = v.findViewById(R.id.tvStatus);
         }
     }
 }
