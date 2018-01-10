@@ -11,7 +11,7 @@ public interface HomeViewInterface {
 
     void displayUsers(UserResponse userResponse);
     void showToast(String msg);
-    void showProgressBar();
+    void showProgressBar(String msg);
     void hideProgressBar();
     void goToChat(SessionDataResponse sessionDataResponse);
 

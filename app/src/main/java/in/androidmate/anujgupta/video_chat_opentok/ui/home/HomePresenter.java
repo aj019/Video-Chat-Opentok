@@ -28,13 +28,15 @@ public class HomePresenter implements HomePresenterInterface {
 
     @Override
     public void getUsers(String device_id) {
-
+        homeView.showProgressBar("Fetching Users. Please Wait ...");
         getObservable(device_id).subscribeWith(getObserver());
         
     }
 
     @Override
     public void startVideoChat(String device_id) {
+
+        homeView.showProgressBar("Starting Session ...");
         getVideoChatObservable(device_id).subscribeWith(getVideoChatObserver());
     }
 
