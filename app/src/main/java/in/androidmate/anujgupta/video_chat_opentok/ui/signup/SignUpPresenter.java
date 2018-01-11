@@ -27,6 +27,7 @@ public class SignUpPresenter implements SignUpPresenterInterface {
     @Override
     public void signUp(String username, String password, String email, String device_id) {
 
+        signUpView.showProgressDialog("Creating Account");
         getObservable(username,password,email,device_id).subscribeWith(getObserver());
 
     }
@@ -65,6 +66,8 @@ public class SignUpPresenter implements SignUpPresenterInterface {
             @Override
             public void onComplete() {
                 Log.d(TAG,"Completed");
+                signUpView.hideProgressDialog();
+                signUpView.moveToLogin();
             }
         };
     }

@@ -1,5 +1,6 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.signup;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
 
     private void initViews(){
         tvTitle.setTypeface(Typefacer.getBoldItalic(this));
+        progressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
     }
 
     private void setupMVP() {
@@ -64,15 +68,14 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
     @OnClick(R.id.link_login)
     public void goToLogin(View v){
 
-        Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
+        moveToLogin();
     }
+
+
 
     @OnClick(R.id.btn_signup)
     public void signUp(View v){
         FirebaseApp.initializeApp(this);
-        showToast("djwhdj");
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String email = etEmail.getText().toString();
@@ -91,5 +94,23 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
     @Override
     public void showToast(String msg) {
         Toast.makeText(SignUpActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgressDialog(String msg) {
+        progressDialog.setTitle(msg);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void moveToLogin(){
+        Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 }

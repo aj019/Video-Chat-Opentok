@@ -6,5 +6,8 @@ package in.androidmate.anujgupta.video_chat_opentok.ui.signup;
 
 public interface SignUpViewInterface {
 
-    public void showToast(String msg);
+     void showToast(String msg);
+     void showProgressDialog(String msg);
+     void hideProgressDialog();
+     void moveToLogin();
 }
