@@ -29,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
+import in.androidmate.anujgupta.video_chat_opentok.ui.home.HomeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -80,6 +81,15 @@ public class ChatActivity extends AppCompatActivity
         if (extras != null) {
             String sess  = extras.getString("session_id");
             String tok = extras.getString("token");
+            boolean isCalling = extras.getBoolean("isCalling");
+            if(isCalling){
+                CallingFragment callingFragment = new CallingFragment();
+                intializeFrameLayout(callingFragment);
+            }else{
+                ReceivingFragment receivingFragment = new ReceivingFragment();
+                intializeFrameLayout(receivingFragment);
+            }
+
             if(sess !=null && tok!=null){
                 Log.d(LOG_TAG,"Token not null");
                 session_id = sess;
@@ -91,9 +101,11 @@ public class ChatActivity extends AppCompatActivity
                 token = OpenTokConfig.TOKEN;
             }
         }else{
-            Log.d(LOG_TAG,"Extras Null");
-            session_id = OpenTokConfig.SESSION_ID;
-            token = OpenTokConfig.TOKEN;
+            Intent intent = new Intent(ChatActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+
         }
 
         Log.d(LOG_TAG,"token = "+ token);
@@ -192,14 +204,13 @@ public class ChatActivity extends AppCompatActivity
         mSession = new Session.Builder(this, apiKey, sessionId).build();
         mSession.setSessionListener(this);
         mSession.connect(token);
-        intializeFrameLayout();
     }
 
-    private void intializeFrameLayout(){
-        Fragment callingFragment = new CallingFragment();
+    private void intializeFrameLayout(Fragment fragment){
+
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.flCalling,callingFragment).commit();
+        fragmentTransaction.add(R.id.flCalling,fragment).commit();
     }
 
     private void hideFrameLayout(){

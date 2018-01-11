@@ -131,6 +131,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             Bundle b = new Bundle();
             b.putString("session_id",sessionDataResponse.getSessionId());
             b.putString("token",sessionDataResponse.getToken());
+            b.putBoolean("isCalling",true);
             i.putExtras(b);
             startActivity(i);
             showToast("Starting Video Chat");
