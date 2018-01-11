@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
+import in.androidmate.anujgupta.video_chat_opentok.MyApplication;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
 import in.androidmate.anujgupta.video_chat_opentok.ui.splash.SplashActivity;
@@ -75,12 +77,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultRintoneUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.whatsapp_remix);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle(notification.getTitle())
                 .setContentText(notification.getBody())
                 .setAutoCancel(true)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setSound(defaultRintoneUri)
                 .setContentIntent(pendingIntent)
                 .setContentInfo(notification.getTitle())
                 .setLargeIcon(icon)
@@ -112,7 +115,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         // Notification Channel is required for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
