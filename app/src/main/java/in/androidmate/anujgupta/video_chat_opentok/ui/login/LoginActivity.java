@@ -1,6 +1,7 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.login;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
 
     private void initViews(){
         tvTitle.setTypeface(Typefacer.getBoldItalic(this));
+        progressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
     }
 
     private void setupMVP() {
@@ -90,5 +94,16 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
         Intent i = new Intent(LoginActivity.this,activity);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void showProgressDialog(String str) {
+        progressDialog.setTitle(str);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
     }
 }
