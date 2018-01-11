@@ -10,4 +10,6 @@ public interface LoginViewInteraface {
 
     void showToast(String msg);
     void goToActivity(Class<? extends Activity> activity);
+    void showProgressDialog(String str);
+    void hideProgressDialog();
 }

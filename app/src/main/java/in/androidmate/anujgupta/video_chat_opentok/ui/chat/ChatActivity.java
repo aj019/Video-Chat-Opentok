@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -20,13 +22,14 @@ import com.opentok.android.Session;
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
-
+import android.support.v4.app.Fragment;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
+import in.androidmate.anujgupta.video_chat_opentok.ui.home.HomeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -56,6 +59,8 @@ public class ChatActivity extends AppCompatActivity
     private String token = "";
 
 
+    @BindView(R.id.flCalling)
+    FrameLayout flCalling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,15 @@ public class ChatActivity extends AppCompatActivity
         if (extras != null) {
             String sess  = extras.getString("session_id");
             String tok = extras.getString("token");
+            boolean isCalling = extras.getBoolean("isCalling");
+            if(isCalling){
+                CallingFragment callingFragment = new CallingFragment();
+                intializeFrameLayout(callingFragment);
+            }else{
+                ReceivingFragment receivingFragment = new ReceivingFragment();
+                intializeFrameLayout(receivingFragment);
+            }
+
             if(sess !=null && tok!=null){
                 Log.d(LOG_TAG,"Token not null");
                 session_id = sess;
@@ -87,9 +101,11 @@ public class ChatActivity extends AppCompatActivity
                 token = OpenTokConfig.TOKEN;
             }
         }else{
-            Log.d(LOG_TAG,"Extras Null");
-            session_id = OpenTokConfig.SESSION_ID;
-            token = OpenTokConfig.TOKEN;
+            Intent intent = new Intent(ChatActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+
         }
 
         Log.d(LOG_TAG,"token = "+ token);
@@ -188,6 +204,17 @@ public class ChatActivity extends AppCompatActivity
         mSession = new Session.Builder(this, apiKey, sessionId).build();
         mSession.setSessionListener(this);
         mSession.connect(token);
+    }
+
+    private void intializeFrameLayout(Fragment fragment){
+
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.flCalling,fragment).commit();
+    }
+
+    private void hideFrameLayout(){
+        flCalling.setVisibility(View.GONE);
     }
 
     /* Web Service Coordinator delegate methods */
@@ -300,7 +327,7 @@ public class ChatActivity extends AppCompatActivity
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
-
+        hideFrameLayout();
         Log.d(LOG_TAG, "onConnected: Subscriber connected. Stream: "+subscriberKit.getStream().getStreamId());
     }
 

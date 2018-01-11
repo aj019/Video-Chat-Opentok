@@ -13,6 +13,7 @@ import java.util.List;
 
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.models.User;
+import in.androidmate.anujgupta.video_chat_opentok.utils.Typefacer;
 
 /**
  * Created by anujgupta on 08/01/18.
@@ -49,11 +50,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Users>{
 
         ImageView ivUser;
         TextView tvUsername;
+        TextView tvStatus;
         public Users(View v) {
             super(v);
 
             ivUser = (ImageView) v.findViewById(R.id.ivUserImage);
             tvUsername = (TextView) v.findViewById(R.id.tvUsername);
+            tvStatus = v.findViewById(R.id.tvStatus);
+
+            tvUsername.setTypeface(Typefacer.getBold(context));
+            tvStatus.setTypeface(Typefacer.getRegular(context));
         }
     }
 }

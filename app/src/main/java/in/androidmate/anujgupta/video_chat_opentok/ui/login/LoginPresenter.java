@@ -31,6 +31,7 @@ public class LoginPresenter implements LoginPresenterInterface {
 
     @Override
     public void login(String email, String password, String device_id) {
+        loginView.showProgressDialog("Logging In");
         getObservable(email,password,device_id).subscribeWith(getObserver());
     }
 
@@ -71,6 +72,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             @Override
             public void onComplete() {
                 Log.d(TAG,"Completed");
+                loginView.hideProgressDialog();
             }
         };
     }

@@ -1,11 +1,16 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +24,8 @@ import in.androidmate.anujgupta.video_chat_opentok.helpers.RecyclerItemClickList
 import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
+import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
 
 public class HomeActivity extends AppCompatActivity implements HomeViewInterface {
 
@@ -27,13 +34,24 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     @BindView(R.id.rvUsers)
     RecyclerView rvUsers;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     RecyclerView.Adapter adapter;
+    ProgressDialog progressDialog;
+
+    UserResponse userRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
 
 
         setupMVP();
@@ -49,6 +67,22 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
 
     private void setupViews(){
         rvUsers.setLayoutManager(new LinearLayoutManager(this));
+        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String device = userRes.getUsers().get(position).getDeviceId();
+                Log.d("Device id",device);
+                homePresenter.startVideoChat(device);
+            }
+        }));
+
+        progressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getUsers();
+            }
+        });
     }
 
     private void getUsers() {
@@ -60,17 +94,12 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     @Override
     public void displayUsers(final UserResponse userResponse) {
         if(userResponse!=null) {
-
-            adapter = new UserAdapter(HomeActivity.this,userResponse.getUsers());
+            userRes = userResponse;
+            adapter = new UserAdapter(HomeActivity.this,userRes.getUsers());
+            adapter.notifyDataSetChanged();
+            rvUsers.invalidate();
             rvUsers.setAdapter(adapter);
-            rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    String device = userResponse.getUsers().get(position).getDeviceId();
-                    Log.d("Device id",device);
-                    homePresenter.startVideoChat(device);
-                }
-            }));
+
 
         }else{
             showToast("User Response returned null");
@@ -83,13 +112,16 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     }
 
     @Override
-    public void showProgressBar() {
-
+    public void showProgressBar(String msg) {
+        progressDialog.setTitle(msg);
+        progressDialog.show();
     }
 
     @Override
     public void hideProgressBar() {
 
+        progressDialog.dismiss();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -99,11 +131,33 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             Bundle b = new Bundle();
             b.putString("session_id",sessionDataResponse.getSessionId());
             b.putString("token",sessionDataResponse.getToken());
+            b.putBoolean("isCalling",true);
             i.putExtras(b);
             startActivity(i);
             showToast("Starting Video Chat");
         }else{
             showToast("Could Not Generate Session");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.logout) {
+            PrefManager.putBoolean("isLoggedIn",false);
+            Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
     }
 }

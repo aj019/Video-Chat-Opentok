@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#013a46</color>
-    <color name="colorPrimaryDark">#013a46</color>
-    <color name="colorAccent">#089377</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorAccent">#607D8B</color>
 
     <color name="end_call_button">#f14141</color>
-
+    <color name="white">#fff</color>
     <color name="publisher_border_color">#FFFFFF</color>
+    <color name="black">#000</color>
 </resources>

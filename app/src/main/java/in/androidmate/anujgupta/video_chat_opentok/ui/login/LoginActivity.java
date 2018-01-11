@@ -1,6 +1,7 @@
 package in.androidmate.anujgupta.video_chat_opentok.ui.login;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.ui.signup.SignUpActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.Typefacer;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInteraface {
 
@@ -34,6 +36,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     @BindView(R.id.etPassword)
     EditText etPassword;
 
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,13 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        initViews();
         setupMVP();
+    }
+
+    private void initViews(){
+        tvTitle.setTypeface(Typefacer.getBoldItalic(this));
+        progressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
     }
 
     private void setupMVP() {
@@ -81,5 +94,16 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
         Intent i = new Intent(LoginActivity.this,activity);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void showProgressDialog(String str) {
+        progressDialog.setTitle(str);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
     }
 }
