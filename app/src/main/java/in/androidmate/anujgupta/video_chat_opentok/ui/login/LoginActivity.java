@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     @OnClick(R.id.link_signup)
     public void goToSignUp(View view){
         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        overridePendingTransition(R.anim.enter_from_right,R.anim.exit_from_left);
     }
 
     @OnClick(R.id.btn_login)

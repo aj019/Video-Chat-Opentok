@@ -120,5 +120,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
         Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_from_right);
     }
 }
