@@ -2,6 +2,7 @@ package in.androidmate.anujgupta.video_chat_opentok.network;
 
 
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
+import in.androidmate.anujgupta.video_chat_opentok.models.LoginResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import io.reactivex.Observable;
@@ -19,7 +20,7 @@ public interface NetworkInterface {
     Observable<ApiResponse> signup(@Query("username") String username, @Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
     @GET("login.php")
-    Observable<ApiResponse> login(@Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
+    Observable<LoginResponse> login(@Query("email") String email, @Query("password") String password, @Query("device_id") String device_id);
 
     @GET("fetchUsers.php")
     Observable<UserResponse> fetchUsers(@Query("device_id") String device_id);

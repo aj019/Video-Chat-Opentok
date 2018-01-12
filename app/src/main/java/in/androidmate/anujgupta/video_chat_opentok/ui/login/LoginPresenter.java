@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import in.androidmate.anujgupta.video_chat_opentok.models.ApiResponse;
+import in.androidmate.anujgupta.video_chat_opentok.models.LoginResponse;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkClient;
 import in.androidmate.anujgupta.video_chat_opentok.network.NetworkInterface;
 import in.androidmate.anujgupta.video_chat_opentok.ui.home.HomeActivity;
@@ -36,24 +37,26 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
 
-    public Observable<ApiResponse> getObservable(String email, String password, String device_id){
+    public Observable<LoginResponse> getObservable(String email, String password, String device_id){
         return NetworkClient.getRetrofit().create(NetworkInterface.class)
                 .login(email,password,device_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public DisposableObserver<ApiResponse> getObserver(){
-        return new DisposableObserver<ApiResponse>() {
+    public DisposableObserver<LoginResponse> getObserver(){
+        return new DisposableObserver<LoginResponse>() {
 
             @Override
-            public void onNext(@NonNull ApiResponse apiResponse) {
+            public void onNext(@NonNull LoginResponse apiResponse) {
                 Log.d(TAG,"OnNext"+apiResponse.getStatus());
 
                 if(apiResponse.getStatus().equals("success")){
-                    loginView.showToast("Login Sucessful");
+
                     PrefManager.putBoolean("isLoggedIn",true);
                     PrefManager.putString("device_id", FirebaseInstanceId.getInstance().getToken());
+                    PrefManager.putString("username",apiResponse.getUser().getUsername());
+                    loginView.showToast("Welcome "+PrefManager.getString("username","User"));
                     loginView.goToActivity(HomeActivity.class);
                 }else{
                     loginView.showToast("Signup Error"+apiResponse.getError());
