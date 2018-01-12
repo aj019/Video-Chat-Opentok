@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.NetwokConnectionManager;
+import in.androidmate.anujgupta.video_chat_opentok.utils.ShowInternetAlertDialog;
 import in.androidmate.anujgupta.video_chat_opentok.utils.Typefacer;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpViewInterface {
@@ -75,18 +77,24 @@ public class SignUpActivity extends AppCompatActivity implements SignUpViewInter
 
     @OnClick(R.id.btn_signup)
     public void signUp(View v){
-        FirebaseApp.initializeApp(this);
-        String username = etUsername.getText().toString();
-        String password = etPassword.getText().toString();
-        String email = etEmail.getText().toString();
-        String device_id = FirebaseInstanceId.getInstance().getToken();
 
-        if(username.equals("") || password.equals("") || email.equals("")){
-            showToast("Please enter all fields");
+        if(NetwokConnectionManager.isOnline(this)) {
+
+
+            FirebaseApp.initializeApp(this);
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
+            String email = etEmail.getText().toString();
+            String device_id = FirebaseInstanceId.getInstance().getToken();
+
+            if (username.equals("") || password.equals("") || email.equals("")) {
+                showToast("Please enter all fields");
+            } else {
+                signUpPresenter.signUp(username, password, email, device_id);
+            }
         }else{
-            signUpPresenter.signUp(username,password,email,device_id);
+            ShowInternetAlertDialog.noInternet(this);
         }
-
 
     }
 

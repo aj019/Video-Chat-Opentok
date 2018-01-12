@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.androidmate.anujgupta.video_chat_opentok.R;
 import in.androidmate.anujgupta.video_chat_opentok.ui.signup.SignUpActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.NetwokConnectionManager;
+import in.androidmate.anujgupta.video_chat_opentok.utils.ShowInternetAlertDialog;
 import in.androidmate.anujgupta.video_chat_opentok.utils.Typefacer;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInteraface {
@@ -72,15 +74,21 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     @OnClick(R.id.btn_login)
     public void login(){
 
-        String password = etPassword.getText().toString();
-        String email = etEmail.getText().toString();
-        String device_id = FirebaseInstanceId.getInstance().getToken();
+        if(NetwokConnectionManager.isOnline(this)){
+            String password = etPassword.getText().toString();
+            String email = etEmail.getText().toString();
+            String device_id = FirebaseInstanceId.getInstance().getToken();
 
-        if(password.equals("") || email.equals("")){
-            showToast("Please enter all fields");
+            if(password.equals("") || email.equals("")){
+                showToast("Please enter all fields");
+            }else{
+                loginPresenter.login(password,email,device_id);
+            }
         }else{
-            loginPresenter.login(password,email,device_id);
+            ShowInternetAlertDialog.noInternet(this);
         }
+
+
     }
 
 

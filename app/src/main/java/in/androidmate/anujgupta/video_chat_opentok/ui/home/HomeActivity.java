@@ -25,7 +25,9 @@ import in.androidmate.anujgupta.video_chat_opentok.models.SessionDataResponse;
 import in.androidmate.anujgupta.video_chat_opentok.models.UserResponse;
 import in.androidmate.anujgupta.video_chat_opentok.ui.chat.ChatActivity;
 import in.androidmate.anujgupta.video_chat_opentok.ui.login.LoginActivity;
+import in.androidmate.anujgupta.video_chat_opentok.utils.NetwokConnectionManager;
 import in.androidmate.anujgupta.video_chat_opentok.utils.PrefManager;
+import in.androidmate.anujgupta.video_chat_opentok.utils.ShowInternetAlertDialog;
 
 public class HomeActivity extends AppCompatActivity implements HomeViewInterface {
 
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
         setupMVP();
         setupViews();
 
-        getUsers();
+
     }
 
     private void setupMVP() {
@@ -73,7 +75,12 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
                 String device = userRes.getUsers().get(position).getDeviceId();
                 Log.d("Device id",device);
                 String username = PrefManager.getString("username","Someone");
-                homePresenter.startVideoChat(device,username);
+
+                if(NetwokConnectionManager.isOnline(HomeActivity.this)){
+                    homePresenter.startVideoChat(device,username);
+                }else{
+                    ShowInternetAlertDialog.noInternet(HomeActivity.this);
+                }
             }
         }));
 
@@ -87,8 +94,13 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     }
 
     private void getUsers() {
-        String device_id = FirebaseInstanceId.getInstance().getToken();
-        homePresenter.getUsers(device_id);
+        if(NetwokConnectionManager.isOnline(this)){
+            String device_id = FirebaseInstanceId.getInstance().getToken();
+            homePresenter.getUsers(device_id);
+        }else{
+            ShowInternetAlertDialog.noInternet(this);
+        }
+
     }
 
 
@@ -160,5 +172,12 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getUsers();
     }
 }
