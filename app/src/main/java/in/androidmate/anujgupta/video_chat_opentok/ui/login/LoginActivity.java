@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
             if(password.equals("") || email.equals("")){
                 showToast("Please enter all fields");
             }else{
-                loginPresenter.login(password,email,device_id);
+                loginPresenter.login(email,password,device_id);
             }
         }else{
             ShowInternetAlertDialog.noInternet(this);

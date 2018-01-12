@@ -49,8 +49,9 @@ public class SignUpPresenter implements SignUpPresenterInterface {
 
                 if(apiResponse.getStatus().equals("success")){
                     signUpView.showToast("Signup Sucessful");
+                    signUpView.moveToLogin();
                 }else{
-                    signUpView.showToast("Signup Error"+apiResponse.getError());
+                    signUpView.showToast("Signup Error - "+apiResponse.getError());
                 }
 
             }
@@ -67,7 +68,7 @@ public class SignUpPresenter implements SignUpPresenterInterface {
             public void onComplete() {
                 Log.d(TAG,"Completed");
                 signUpView.hideProgressDialog();
-                signUpView.moveToLogin();
+
             }
         };
     }

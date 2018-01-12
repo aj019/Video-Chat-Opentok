@@ -1,6 +1,7 @@
 package in.androidmate.anujgupta.video_chat_opentok.network;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -18,8 +19,11 @@ public class NetworkClient {
 
     public static Retrofit getRetrofit(){
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
+        final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(logging).build();
 
         retrofit = new Retrofit.Builder()
                     .baseUrl("http://www.androidmate.in/video_chat/opentok/")
