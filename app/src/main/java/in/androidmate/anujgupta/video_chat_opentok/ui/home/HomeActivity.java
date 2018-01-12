@@ -147,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             b.putBoolean("isCalling",true);
             i.putExtras(b);
             startActivity(i);
-            showToast("Starting Video Chat");
+            overridePendingTransition(R.anim.enter_from_right,R.anim.exit_from_left);
         }else{
             showToast("Could Not Generate Session");
         }

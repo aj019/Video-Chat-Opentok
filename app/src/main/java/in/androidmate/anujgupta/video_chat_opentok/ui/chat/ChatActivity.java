@@ -107,6 +107,7 @@ public class ChatActivity extends AppCompatActivity
             Intent intent = new Intent(ChatActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
+            overridePendingTransition(R.anim.enter_from_left,R.anim.exit_from_right);
             finish();
 
         }
@@ -271,7 +272,7 @@ public class ChatActivity extends AppCompatActivity
             mSubscriberViewContainer.removeAllViews();
         }
 
-        Toast.makeText(ChatActivity.this,"Video Chat Disconnected",Toast.LENGTH_SHORT).show();
+        Toast.makeText(ChatActivity.this,"Video Chat Ended",Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -347,6 +348,7 @@ public class ChatActivity extends AppCompatActivity
                 .setMessage(errorMessage)
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_from_right);
                         ChatActivity.this.finish();
                     }
                 })
@@ -404,6 +406,7 @@ public class ChatActivity extends AppCompatActivity
 
     @OnClick(R.id.fabCancel)
     public void endCall(){
+        overridePendingTransition(R.anim.enter_from_left,R.anim.exit_from_right);
         finish();
     }
 
