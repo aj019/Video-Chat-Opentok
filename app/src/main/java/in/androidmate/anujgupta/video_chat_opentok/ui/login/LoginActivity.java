@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInteraf
     public void goToActivity(Class<? extends Activity> activity) {
         Intent i = new Intent(LoginActivity.this,activity);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_up,R.anim.stable);
         finish();
     }
 

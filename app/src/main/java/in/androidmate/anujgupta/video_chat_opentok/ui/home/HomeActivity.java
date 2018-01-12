@@ -163,6 +163,7 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             Intent i = new Intent(HomeActivity.this, LoginActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
+            overridePendingTransition(R.anim.stable,R.anim.slide_down);
             finish();
         }
         return super.onOptionsItemSelected(item);
