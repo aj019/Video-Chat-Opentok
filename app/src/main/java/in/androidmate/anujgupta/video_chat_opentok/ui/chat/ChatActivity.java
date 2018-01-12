@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
@@ -57,6 +58,7 @@ public class ChatActivity extends AppCompatActivity
     private FrameLayout mSubscriberViewContainer;
     private String session_id = "";
     private String token = "";
+    MediaPlayer mp;
 
 
     @BindView(R.id.flCalling)
@@ -85,6 +87,7 @@ public class ChatActivity extends AppCompatActivity
             if(isCalling){
                 CallingFragment callingFragment = new CallingFragment();
                 intializeFrameLayout(callingFragment);
+                startRinging();
             }else{
                 ReceivingFragment receivingFragment = new ReceivingFragment();
                 intializeFrameLayout(receivingFragment);
@@ -114,32 +117,7 @@ public class ChatActivity extends AppCompatActivity
         requestPermissions(session_id,token);
     }
 
-     /* Activity lifecycle methods */
 
-    @Override
-    protected void onPause() {
-
-        Log.d(LOG_TAG, "onPause");
-
-        super.onPause();
-
-        if (mSession != null) {
-            mSession.onPause();
-        }
-
-    }
-
-    @Override
-    protected void onResume() {
-
-        Log.d(LOG_TAG, "onResume");
-
-        super.onResume();
-
-        if (mSession != null) {
-            mSession.onResume();
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -215,6 +193,12 @@ public class ChatActivity extends AppCompatActivity
 
     private void hideFrameLayout(){
         flCalling.setVisibility(View.GONE);
+    }
+
+    private void startRinging(){
+        mp = MediaPlayer.create(ChatActivity.this,R.raw.call);
+        mp.start();
+        mp.setLooping(true);
     }
 
     /* Web Service Coordinator delegate methods */
@@ -328,6 +312,10 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
         hideFrameLayout();
+        if(mp!=null && mp.isPlaying()){
+            mp.stop();
+        }
+
         Log.d(LOG_TAG, "onConnected: Subscriber connected. Stream: "+subscriberKit.getStream().getStreamId());
     }
 
@@ -366,6 +354,33 @@ public class ChatActivity extends AppCompatActivity
                 .show();
     }
 
+     /* Activity lifecycle methods */
+
+    @Override
+    protected void onPause() {
+
+        Log.d(LOG_TAG, "onPause");
+
+        super.onPause();
+
+        if (mSession != null) {
+            mSession.onPause();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        Log.d(LOG_TAG, "onResume");
+
+        super.onResume();
+
+        if (mSession != null) {
+            mSession.onResume();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -379,6 +394,10 @@ public class ChatActivity extends AppCompatActivity
 
         if(mSession!=null){
             mSession.disconnect();
+        }
+
+        if(mp != null){
+            mp.release();
         }
 
     }
