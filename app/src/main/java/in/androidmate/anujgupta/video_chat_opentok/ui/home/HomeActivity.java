@@ -72,7 +72,8 @@ public class HomeActivity extends AppCompatActivity implements HomeViewInterface
             public void onItemClick(View view, int position) {
                 String device = userRes.getUsers().get(position).getDeviceId();
                 Log.d("Device id",device);
-                homePresenter.startVideoChat(device);
+                String username = PrefManager.getString("username","Someone");
+                homePresenter.startVideoChat(device,username);
             }
         }));
 

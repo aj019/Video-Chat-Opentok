@@ -34,10 +34,10 @@ public class HomePresenter implements HomePresenterInterface {
     }
 
     @Override
-    public void startVideoChat(String device_id) {
+    public void startVideoChat(String device_id,String username) {
 
         homeView.showProgressBar("Starting Session ...");
-        getVideoChatObservable(device_id).subscribeWith(getVideoChatObserver());
+        getVideoChatObservable(device_id,username).subscribeWith(getVideoChatObserver());
     }
 
     public Observable<UserResponse> getObservable(String device_id){
@@ -71,9 +71,9 @@ public class HomePresenter implements HomePresenterInterface {
         };
     }
 
-    public Observable<SessionDataResponse> getVideoChatObservable(String device_id){
+    public Observable<SessionDataResponse> getVideoChatObservable(String device_id,String username){
         return NetworkClient.getRetrofit().create(NetworkInterface.class)
-                .generateSession(device_id)
+                .generateSession(device_id,username)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

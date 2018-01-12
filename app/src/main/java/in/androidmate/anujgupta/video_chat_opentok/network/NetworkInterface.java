@@ -26,5 +26,5 @@ public interface NetworkInterface {
     Observable<UserResponse> fetchUsers(@Query("device_id") String device_id);
 
     @GET("generateSession.php")
-    Observable<SessionDataResponse> generateSession(@Query("device_id") String device_id);
+    Observable<SessionDataResponse> generateSession(@Query("device_id") String device_id,@Query("caller_name") String username);
 }
